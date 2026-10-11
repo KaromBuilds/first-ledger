@@ -54,11 +54,11 @@ function parseDraft(text: string): AiDraft | null {
   }
 }
 
-/** Gemini drafts rubric notes; on any failure (no key, timeout, bad JSON) the labeled simulated draft is used. */
-export async function draftFeedback(explanation: string, twistId: TwistId, lang: Lang): Promise<AiDraft> {
-  const key = process.env.GEMINI_API_KEY;
-  if (!key) return simulatedDraft(explanation, twistId, lang);
-  const model = process.env.GEMINI_MODEL || "gemini-2.5-flash";
+// Current stable Flash models first. gemini-2.5-flash now returns 404 for new API keys
+// (Google limited 2.5 access to past users), which silently forced the simulated draft in production.
+const DEFAULT_MODELS = ["gemini-3.8-flash", "gemini-3.6-flash"];
+
+async function callGemini(model: string, key: string, prompt: string): Promise<{ status: number; text: string }> {
   const ctrl = new AbortController();
   const timer = setTimeout(() => ctrl.abort(), 15_000);
   try {
@@ -66,20 +66,37 @@ export async function draftFeedback(explanation: string, twistId: TwistId, lang:
       method: "POST",
       headers: { "content-type": "application/json", "x-goog-api-key": key },
       body: JSON.stringify({
-        contents: [{ role: "user", parts: [{ text: buildPrompt(explanation, twistId, lang) }] }],
+        contents: [{ role: "user", parts: [{ text: prompt }] }],
         generationConfig: { responseMimeType: "application/json", temperature: 0.2 },
       }),
       signal: ctrl.signal,
     });
-    if (!r.ok) return simulatedDraft(explanation, twistId, lang);
+    if (!r.ok) return { status: r.status, text: "" };
     const j = (await r.json()) as { candidates?: { content?: { parts?: { text?: string }[] } }[] };
-    const text = j.candidates?.[0]?.content?.parts?.map((p) => p.text ?? "").join("") ?? "";
-    return parseDraft(text) ?? simulatedDraft(explanation, twistId, lang);
-  } catch {
-    return simulatedDraft(explanation, twistId, lang);
+    return { status: r.status, text: j.candidates?.[0]?.content?.parts?.map((p) => p.text ?? "").join("") ?? "" };
   } finally {
     clearTimeout(timer);
   }
+}
+
+/** Gemini drafts rubric notes; on any failure (no key, timeout, bad JSON) the labeled simulated draft is used. */
+export async function draftFeedback(explanation: string, twistId: TwistId, lang: Lang): Promise<AiDraft> {
+  const key = process.env.GEMINI_API_KEY;
+  if (!key) return simulatedDraft(explanation, twistId, lang);
+  const configured = process.env.GEMINI_MODEL;
+  const models = configured ? [configured, ...DEFAULT_MODELS.filter((m) => m !== configured)] : DEFAULT_MODELS;
+  const prompt = buildPrompt(explanation, twistId, lang);
+  for (const model of models) {
+    try {
+      const { status, text } = await callGemini(model, key, prompt);
+      const draft = text ? parseDraft(text) : null;
+      if (draft) return draft;
+      console.error(`[feedback] ${model} unusable (HTTP ${status}${text ? ", bad JSON" : ""}); trying next model`);
+    } catch (e) {
+      console.error(`[feedback] ${model} failed: ${(e as Error).name}`);
+    }
+  }
+  return simulatedDraft(explanation, twistId, lang);
 }
 
 export const __test = { buildPrompt, parseDraft };

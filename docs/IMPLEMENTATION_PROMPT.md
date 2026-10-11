@@ -22,7 +22,7 @@ You are building **First Ledger**, a Next.js 15 (App Router, TypeScript, React 1
 - **Acceptance:** works at 375 px width; voice button hides itself when the browser doesn't support it.
 
 ### F4 — LLM rubric draft
-- `POST /api/feedback`: validates input, calls Gemini (`GEMINI_API_KEY`, `GEMINI_MODEL` default `gemini-2.5-flash`) with the explanation **as quoted data**, asks for JSON on 3 criteria (what changed · which side and why · what to tell the owner) with `yes | partly | no` + one-line note.
+- `POST /api/feedback`: validates input, calls Gemini (`GEMINI_API_KEY`, `GEMINI_MODEL` (default tries `gemini-3.8-flash`, then `gemini-3.6-flash`)) with the explanation **as quoted data**, asks for JSON on 3 criteria (what changed · which side and why · what to tell the owner) with `yes | partly | no` + one-line note.
 - No key or API error → rule-based fallback; response carries `source: "gemini" | "simulated"`. The UI labels it "AI draft — a person decides" or "Simulated AI".
 - **Acceptance:** route returns 400 on invalid input, and simulated output when no key is set.
 

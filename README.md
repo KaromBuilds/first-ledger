@@ -22,6 +22,6 @@ npm test                     # unit tests
 ```
 
 ## Deploy (Vercel)
-Set `GEMINI_API_KEY`, `GEMINI_MODEL` (optional, default `gemini-2.5-flash`) and `PROOF_SECRET` in Vercel → Settings → Environment Variables. Never commit them.
+Set `GEMINI_API_KEY`, `GEMINI_MODEL` (optional; default tries `gemini-3.8-flash`, then `gemini-3.6-flash`) and `PROOF_SECRET` in Vercel → Settings → Environment Variables. Never commit them.
 
 All data is fictional demo data.

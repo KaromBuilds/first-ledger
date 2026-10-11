@@ -131,7 +131,7 @@ If this slice works, First Ledger becomes a library of short, observed proof tas
 | Layer | Choice | Why |
 |---|---|---|
 | Frontend | Next.js 15 (App Router) + React 19 + TypeScript, plain CSS | Same free stack as previous weeks; mobile-first |
-| **LLM** | Google Gemini (`gemini-2.5-flash`) via server route | Drafts rubric notes on the explanation. Labeled "AI draft". If no key: rule-based fallback labeled "Simulated AI" |
+| **LLM** | Google Gemini (`gemini-3.8-flash`, falls back to `gemini-3.6-flash`) via server route | Drafts rubric notes on the explanation. Labeled "AI draft". If no key: rule-based fallback labeled "Simulated AI" |
 | **Structured / verified data** | Fixed task bank (ledger, bank statement, answer key, 3 twists with keys) graded deterministically on the server | A reconciliation balances or it doesn't. AI never decides correctness |
 | **One more: voice** | Browser Web Speech API (`es-MX` / `en-US`) for the spoken explanation, text fallback | The "live explanation" condition, in the candidate's own words |
 | **One more: automation** | HMAC-SHA256 signing of proof and review links | Reviewer can verify the record wasn't edited, with no database |

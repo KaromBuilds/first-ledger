@@ -41,3 +41,11 @@ A running log. Each session ends with: decisions updated, tomorrow's first move 
 - Deferred: saving progress across app switches (conflicts with private failures on shared phones) and a side-by-side mobile layout.
 
 **Tomorrow's first move:** deploy 2 with these fixes, record the demo on the live URL.
+
+## Session 4 — Oct 10, 2026 (deploy 1 on Vercel)
+
+**Bug found on the live URL:** the full loop worked in production, but every AI draft came back "Simulated AI" even though `GEMINI_API_KEY` was set. Cause: Google now limits `gemini-2.5-flash` to keys that used it before; new keys get HTTP 404, and my code silently fell back.
+
+**Fix:** default to the current stable `gemini-3.8-flash`, then `gemini-3.6-flash` if that one fails; `GEMINI_MODEL` can still override. Each failed model is logged (model + HTTP status, never the key) so the next silent fallback shows up in Vercel Logs.
+
+**Lesson:** a fallback that is labeled honestly is good for users, but it hid a production bug from me. Fallbacks need a log line.
