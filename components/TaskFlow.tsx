@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useLang } from "./lang";
 import { Evidence } from "./Evidence";
+import { CopyBox } from "./linkTools";
 import { fmtClock, useCountdown } from "./useCountdown";
 import { AI_USE_LABEL, CATEGORY_LABEL } from "@/lib/i18n";
 import { formatMoney, parseMoney } from "@/lib/grade";
@@ -135,6 +136,8 @@ export default function TaskFlow() {
   const [record, setRecord] = useState<ProofRecord | null>(null);
   const [token, setToken] = useState<string | null>(null);
   const [keptPrivate, setKeptPrivate] = useState(false);
+  const [correction, setCorrection] = useState("");
+  const [shareUrl, setShareUrl] = useState<string | null>(null);
   const recRef = useRef<SpeechRec | null>(null);
 
   useEffect(() => setVoiceOk(!!getRecognizer()), []);
@@ -243,7 +246,29 @@ export default function TaskFlow() {
     }
   }
 
+  async function share() {
+    if (!token) return;
+    setBusy(true);
+    setError("");
+    try {
+      const r = await fetch("/api/share", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ token, correctionNote: correction }),
+      });
+      if (!r.ok) throw new Error();
+      const j = await r.json();
+      setShareUrl(`${window.location.origin}/review#${j.token}`);
+    } catch {
+      setError(t.errorGeneric);
+    } finally {
+      setBusy(false);
+    }
+  }
+
   function reset() {
+    setShareUrl(null);
+    setCorrection("");
     setStep("intro");
     setTicket(null);
     setTwistId("");
@@ -415,20 +440,34 @@ export default function TaskFlow() {
         <h1>{t.resultTitle}</h1>
         <p className="lead">{t.resultIntro}</p>
         <Evidence record={record} audience="candidate" />
-        {keptPrivate ? (
+        {shareUrl ? (
+          <section className="card">
+            <h2>{t.shareTitle}</h2>
+            <p className="note">{t.shareHelp}</p>
+            <CopyBox url={shareUrl} copyLabel={t.copy} copiedLabel={t.copied} />
+          </section>
+        ) : keptPrivate ? (
           <p className="privacy">{t.keptPrivate}</p>
         ) : (
-          <div className="actions">
-            <button className="ghost" onClick={() => setKeptPrivate(true)}>
-              {t.keepPrivate}
-            </button>
-          </div>
+          <>
+            <label className="field">
+              <span>{t.correctionLabel}</span>
+              <textarea rows={3} maxLength={500} placeholder={t.correctionPlaceholder} value={correction} onChange={(e) => setCorrection(e.target.value)} />
+            </label>
+            <div className="actions">
+              <button className="primary" onClick={share} disabled={busy}>
+                {t.createLink}
+              </button>
+              <button className="ghost" onClick={() => setKeptPrivate(true)}>
+                {t.keepPrivate}
+              </button>
+            </div>
+          </>
         )}
         {err}
         <button className="link" onClick={reset}>
           {t.tryAgain}
         </button>
-        {token && null}
       </main>
     );
 
