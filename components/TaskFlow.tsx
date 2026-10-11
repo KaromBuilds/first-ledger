@@ -445,7 +445,7 @@ export default function TaskFlow() {
           <section className="card">
             <h2>{t.shareTitle}</h2>
             <p className="note">{t.shareHelp}</p>
-            <CopyBox url={shareUrl} copyLabel={t.copy} copiedLabel={t.copied} />
+            <CopyBox url={shareUrl} copyLabel={t.copy} copiedLabel={t.copied} waLabel={t.shareWa} waMessage={t.shareWaMsg} />
           </section>
         ) : keptPrivate ? (
           <p className="privacy">{t.keptPrivate}</p>

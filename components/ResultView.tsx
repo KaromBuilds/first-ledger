@@ -70,10 +70,6 @@ export default function ResultView() {
               </span>
             </li>
           ))}
-          <li>
-            <span className="checkname">{t.addedEvidenceLabel}</span>
-            <span className="pill neutral">{t.yesNo[r.addedEvidence]}</span>
-          </li>
         </ul>
         {r.note && <blockquote className="quote">{r.note}</blockquote>}
       </section>

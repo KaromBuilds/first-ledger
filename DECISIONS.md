@@ -27,3 +27,17 @@ A running log. Each session ends with: decisions updated, tomorrow's first move 
 **Known limitation (honest):** without a database, single-use is enforced per server instance. On Vercel a determined candidate could still start a new attempt (with a new random twist and a new start time). That's acceptable for the pilot because a new attempt doesn't erase anything: it's a new, separately timed proof. A pilot with real employers would add a tiny attempt log (ticket ids only, no personal data).
 
 **Tomorrow's first move:** persona test with screenshots of every screen.
+
+## Session 3 — Oct 10, 2026 (persona test)
+
+**Persona:** Ruth, 22, built from my User interview (full log in `docs/PERSONA.md`).
+
+**Worst confusion:** the share step showed a huge raw encoded link that "parece virus o de esos mensajes de fraude", with no clear recipient. A quiet quitter would just never send it.
+
+**Decisions:**
+- Hide the raw link. Primary action is **WhatsApp with a friendly pre-filled message**; copy is the fallback. That's how Mexican small businesses actually talk.
+- Reword everything that sounded like suspicion (tamper note, AI disclosure). Integrity stays the same; only the tone changes.
+- Pills say "Coincide con lo esperado" instead of "Correcto", to match the promise that this isn't a grade.
+- Deferred: saving progress across app switches (conflicts with private failures on shared phones) and a side-by-side mobile layout.
+
+**Tomorrow's first move:** deploy 2 with these fixes, record the demo on the live URL.

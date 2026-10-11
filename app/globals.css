@@ -145,3 +145,7 @@ fieldset { margin: 0; }
   body { background: #fff; }
   .card { break-inside: avoid; }
 }
+
+.linkchip { font-size: .9rem; color: var(--navy); background: #faf9f6; border: 1px solid var(--line); border-radius: 999px; padding: 6px 12px; display: inline-block; margin: 4px 0; }
+a.primary { display: inline-flex; align-items: center; justify-content: center; text-decoration: none; border-radius: 10px; padding: 11px 18px; }
+a.primary.wa { background: #1f8f4e; }

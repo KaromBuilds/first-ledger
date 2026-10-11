@@ -25,23 +25,49 @@ export async function verifyToken<T>(token: string, kind: "proof" | "review"): P
   return j.ok ? (j.record as T) : null;
 }
 
-export function CopyBox({ url, copyLabel, copiedLabel }: { url: string; copyLabel: string; copiedLabel: string }) {
+/**
+ * Share without showing the raw encoded link (persona test: it looked like a scam message).
+ * Primary action is WhatsApp with a friendly pre-filled message; copy is the fallback.
+ */
+export function CopyBox({ url, copyLabel, copiedLabel, waLabel, waMessage }: {
+  url: string;
+  copyLabel: string;
+  copiedLabel: string;
+  waLabel?: string;
+  waMessage?: string;
+}) {
   const [copied, setCopied] = useState(false);
+  const host = (() => {
+    try {
+      const u = new URL(url);
+      return `${u.host}${u.pathname}`;
+    } catch {
+      return "";
+    }
+  })();
   return (
     <div>
-      <p className="sharebox" data-testid="share-url">{url}</p>
-      <button
-        className="ghost"
-        onClick={async () => {
-          try {
-            await navigator.clipboard.writeText(url);
-            setCopied(true);
-            setTimeout(() => setCopied(false), 2000);
-          } catch {}
-        }}
-      >
-        {copied ? copiedLabel : copyLabel}
-      </button>
+      <span hidden data-testid="share-url">{url}</span>
+      <p className="linkchip">🔗 {host} · 🔒</p>
+      <div className="actions">
+        {waLabel && waMessage && (
+          <a className="primary wa" href={`https://wa.me/?text=${encodeURIComponent(`${waMessage}\n${url}`)}`} target="_blank" rel="noopener noreferrer">
+            {waLabel}
+          </a>
+        )}
+        <button
+          className="ghost"
+          onClick={async () => {
+            try {
+              await navigator.clipboard.writeText(url);
+              setCopied(true);
+              setTimeout(() => setCopied(false), 2000);
+            } catch {}
+          }}
+        >
+          {copied ? copiedLabel : copyLabel}
+        </button>
+      </div>
     </div>
   );
 }

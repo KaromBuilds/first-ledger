@@ -56,7 +56,7 @@ const twist = /rebotó/.test(msg) ? "returned" : /nómina/.test(msg) ? "duplicat
 console.log("twist:", twist);
 await shot(page, "twist-empty");
 await page.locator("select").selectOption(ANSWERS[twist].cat);
-await page.getByLabel("Nuevo saldo conciliado").fill(ANSWERS[twist].bal);
+await page.getByLabel("Saldo conciliado después del cambio (puede quedar igual)").fill(ANSWERS[twist].bal);
 await page.locator("textarea").fill(ANSWERS[twist].text);
 await shot(page, "twist-filled");
 await page.getByRole("button", { name: "Continuar" }).click();

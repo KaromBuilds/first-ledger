@@ -91,7 +91,7 @@ export default function ReviewView() {
           <p className="note">
             {t.reviewTime}: {reviewMin} {t.minutes}
           </p>
-          <CopyBox url={replyUrl} copyLabel={t.copy} copiedLabel={t.copied} />
+          <CopyBox url={replyUrl} copyLabel={t.copy} copiedLabel={t.copied} waLabel={t.shareWa} waMessage={t.replyWaMsg} />
         </section>
       ) : (
         <section className="card">
