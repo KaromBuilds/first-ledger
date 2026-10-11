@@ -2,7 +2,7 @@
 
 > Generated from `docs/PACKET.md`. Give this to the coding agent as-is.
 
-You are building **First Ledger**, a Next.js 15 (App Router, TypeScript, React 19, plain CSS) web app deployed on Vercel. Read `docs/PACKET.md` first; the Blueprint conditions in section 10 are hard constraints. No database, no auth, no stored personal data. Bilingual UI (ES default, EN toggle).
+You are building **First Ledger**, a Next.js 15 (App Router, TypeScript, React 19, plain CSS) web app deployed on Vercel. Read `docs/PACKET.md` first; the Blueprint conditions in section 10 are hard constraints. No database, no auth, no stored personal data. Bilingual UI (EN default, ES toggle).
 
 ## Features (build in this order, one commit each)
 

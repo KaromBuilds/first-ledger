@@ -12,7 +12,7 @@ A running log. Each session ends with: decisions updated, tomorrow's first move 
 - **No total score, no pass/fail.** Condition 1 forbids a universal score. The result shows item-by-item evidence and a human signs the decision.
 - **Timers record overruns instead of locking the candidate out.** Ruth told me she felt she "wasn't cut out for accounting" after being ignored. A hard lockout would recreate that feeling for nervous candidates. The reviewer sees the overrun and decides.
 - **Voice explanation with a text fallback.** Speech recognition isn't available in every browser (Firefox, some iPhones), and nobody should be blocked for their device.
-- **Bilingual, Spanish by default.** The users are Mexican; the demo is recorded in English.
+- **Bilingual.** English is the default (the course and demo are in English); one tap switches the whole app to Spanish for Mexican candidates and reviewers.
 
 **Tomorrow's first move:** run the mechanical test pass on the deployed URL, then the persona test.
 
@@ -32,7 +32,7 @@ A running log. Each session ends with: decisions updated, tomorrow's first move 
 
 **Persona:** Ruth, 22, built from my User interview (full log in `docs/PERSONA.md`).
 
-**Worst confusion:** the share step showed a huge raw encoded link that "parece virus o de esos mensajes de fraude", with no clear recipient. A quiet quitter would just never send it.
+**Worst confusion:** the share step showed a huge raw encoded link that "looks like a virus or one of those scam messages", with no clear recipient. A quiet quitter would just never send it.
 
 **Decisions:**
 - Hide the raw link. Primary action is **WhatsApp with a friendly pre-filled message**; copy is the fallback. That's how Mexican small businesses actually talk.
@@ -49,3 +49,5 @@ A running log. Each session ends with: decisions updated, tomorrow's first move 
 **Fix:** default to the current stable `gemini-3.8-flash`, then `gemini-3.6-flash` if that one fails; `GEMINI_MODEL` can still override. Each failed model is logged (model + HTTP status, never the key) so the next silent fallback shows up in Vercel Logs.
 
 **Lesson:** a fallback that is labeled honestly is good for users, but it hid a production bug from me. Fallbacks need a log line.
+
+**Language default:** the app shipped Spanish-first. The course is in English, so English is now the default and Spanish is one tap away (the choice is remembered per browser).

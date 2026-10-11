@@ -5,10 +5,10 @@ import { STRINGS, type Strings } from "@/lib/i18n";
 import type { Lang } from "@/lib/task";
 
 type Ctx = { lang: Lang; t: Strings; toggle: () => void };
-const LangCtx = createContext<Ctx>({ lang: "es", t: STRINGS.es, toggle: () => {} });
+const LangCtx = createContext<Ctx>({ lang: "en", t: STRINGS.en, toggle: () => {} });
 
 export function LangProvider({ children }: { children: React.ReactNode }) {
-  const [lang, setLang] = useState<Lang>("es");
+  const [lang, setLang] = useState<Lang>("en");
   useEffect(() => {
     try {
       const saved = localStorage.getItem("fl-lang");
@@ -20,7 +20,7 @@ export function LangProvider({ children }: { children: React.ReactNode }) {
   }, [lang]);
   const toggle = () =>
     setLang((l) => {
-      const next = l === "es" ? "en" : "es";
+      const next = l === "en" ? "es" : "en";
       try {
         localStorage.setItem("fl-lang", next);
       } catch {}
