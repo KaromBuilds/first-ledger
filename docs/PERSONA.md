@@ -47,3 +47,7 @@ Built from my User research (Ruth's interview), run in a fresh chat that had nev
 - **Side-by-side matching on a phone** (#2). Needs a different mobile layout; larger change than the deadline allows.
 - **"0 min" timings** in the screenshots: an artifact of the automated run (completed in seconds). Real attempts show real minutes.
 - **"What happens next"** after a reviewer chooses "paid trial" (#9): depends on Rodrigo's OPERATOR workflow and José Fernando's MONEY model. The review note field is where the reviewer says how to continue.
+
+## After the fix — the share step
+
+![Share step after the persona fix](screens/08-share.png)

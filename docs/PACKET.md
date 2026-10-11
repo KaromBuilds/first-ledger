@@ -1,7 +1,9 @@
 # PACKET — First Ledger (Week 9 · Business Bending)
 
 **Builder:** Karom Asael González Martínez · Team 2 · Role this week: USER
+
 **Primary vacuum (Blueprint):** FIRST-PROOF
+
 **My declaration:** a Ruth-inspired bookkeeping proof task that honors candidate ownership and fair evidence.
 
 ---
@@ -47,28 +49,37 @@ Measured in the test pass: full candidate → reviewer → candidate loop works 
 ### Flowchart
 
 ```mermaid
-flowchart TD
-    A[Candidate opens First Ledger] --> B[Reads rules + privacy: nothing stored, AI must be disclosed]
-    B --> C[Part 1: Reconcile September books vs bank statement<br/>25 min, fictional data]
-    C --> D[Flags non-matching lines, classifies each one,<br/>enters adjusted balance]
-    D --> E[Changed condition appears<br/>random twist from verified bank]
-    E --> F[Candidate updates balance + explains the change<br/>by voice or text, 8 min]
-    F --> G[AI-use disclosure]
-    G --> H[Server re-grades against answer key<br/>LLM drafts rubric notes on explanation]
-    H --> I[Candidate sees result FIRST<br/>item by item, no overall score]
-    I --> J{Share it?}
-    J -- No --> K[Attempt stays private<br/>closes with the tab]
-    J -- Yes --> L[Candidate adds optional correction note<br/>server signs the proof → share link]
-    L --> M[Reviewer opens link<br/>signature verified]
-    M --> N[Reviewer scores 3 criteria + decision,<br/>enters name and role; timer runs]
-    N --> O[Server signs the review → link back to candidate]
-    O --> P[Candidate sees review, can export the proof card]
+flowchart LR
+    subgraph P1[1 · Candidate does the task]
+        direction TB
+        A[Opens First Ledger] --> B[Rules + privacy:<br/>nothing stored,<br/>AI must be disclosed]
+        B --> C[Part 1: reconcile<br/>books vs bank<br/>25 min, fictional data]
+        C --> D[Flags non-matching lines,<br/>classifies each,<br/>enters adjusted balance]
+        D --> E[Changed condition<br/>random twist from<br/>verified bank]
+        E --> F[Updates balance +<br/>explains by voice<br/>or text, 8 min]
+        F --> G[AI-use disclosure]
+    end
+    subgraph P2[2 · Candidate owns the result]
+        direction TB
+        H[Server re-grades<br/>with answer key;<br/>LLM drafts notes] --> I[Candidate sees<br/>result FIRST<br/>no overall score]
+        I --> J{Share it?}
+        J -- No --> K[Stays private,<br/>gone with the tab]
+        J -- Yes --> L[Optional correction note;<br/>server signs proof;<br/>WhatsApp link]
+    end
+    subgraph P3[3 · Named human decides]
+        direction TB
+        M[Reviewer opens link,<br/>signature verified] --> N[Scores 3 criteria +<br/>decision, name, role;<br/>timer runs]
+        N --> O[Server signs review,<br/>link back to candidate]
+        O --> P[Candidate sees review,<br/>exports proof card]
+    end
+    P1 --> P2
+    P2 -- shared link --> P3
 ```
 
 ### Swimlane — who does what
 
 ```mermaid
-flowchart LR
+flowchart TB
     subgraph Candidate
         c1[Do the task] --> c2[Handle the twist + explain]
         c2 --> c3[Disclose AI use]
