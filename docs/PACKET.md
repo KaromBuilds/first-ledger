@@ -42,7 +42,7 @@ Measured in the test pass: full candidate → reviewer → candidate loop works 
 
 *Image generated with the free image model of my LLM, from this prompt:*
 
-> A clean mobile web app screen for a Mexican bookkeeping skills test called "First Ledger". Top: small logo with an open ledger book icon, language toggle ES/EN. Title: "Show what you can do with the books — no CV needed". Below, two side-by-side cards labeled "Your books (ledger)" and "Bank statement" with short rows of dates, descriptions and peso amounts, some rows highlighted in amber as "doesn't match". A timer chip "18:42 left". At the bottom, a green button "Submit reconciliation" and a small grey note "Nothing is saved on our server. You decide who sees your result." Flat design, white background, navy and green accents, readable sans-serif, realistic phone frame.
+> A clean mobile web app screen for a Mexican bookkeeping skills test called "First Ledger". Top: small logo with an open ledger book icon, and a language toggle button "Español" in the top right. Title: "Show what you can do with the books — no CV needed". Below, two stacked cards labeled "Your books (ledger)" and "Bank statement" with short rows of dates, descriptions and peso amounts, some rows highlighted in soft amber as "doesn't match" with a dropdown underneath. A dark navy timer chip "18:42 left" next to the heading "Part 1 · Reconcile September". At the bottom, a green full-width button "Continue" and a small grey note "Nothing is saved on our server. You decide who sees your result." Flat design, warm off-white background, navy and green accents, readable sans-serif, realistic iPhone frame, all text in English.
 
 ## 5. The flow (Mermaid)
 
