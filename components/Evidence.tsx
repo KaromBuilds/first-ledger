@@ -17,6 +17,9 @@ export function Evidence({ record, audience }: { record: ProofRecord; audience: 
   const c = record.checks;
   const twist = getTwist(record.twistId);
   const sub = record.submission;
+  // The answer key is shown to reviewers only. Showing it to the candidate would let a
+  // proof be "fixed" invisibly; corrections go through the visible correction note instead.
+  const showKey = audience === "reviewer";
 
   return (
     <div className="evidence">
@@ -38,7 +41,8 @@ export function Evidence({ record, audience }: { record: ProofRecord; audience: 
                 )}
                 {it.found && !it.categoryCorrect && flaggedId && (
                   <div className="sub">
-                    {t.yourAnswer}: {CATEGORY_LABEL[lang][sub.flags[flaggedId]]} · {t.expected}: {CATEGORY_LABEL[lang][exp.category]}
+                    {t.yourAnswer}: {CATEGORY_LABEL[lang][sub.flags[flaggedId]]}
+                    {showKey && <> · {t.expected}: {CATEGORY_LABEL[lang][exp.category]}</>}
                   </div>
                 )}
               </li>
@@ -66,7 +70,7 @@ export function Evidence({ record, audience }: { record: ProofRecord; audience: 
             <Pill ok={c.balance1Correct}>{c.balance1Correct ? t.correct : t.different}</Pill>
             <div className="sub">
               {t.yourAnswer}: {formatMoney(sub.balance1)}
-              {!c.balance1Correct && <> · {t.expected}: {formatMoney(BASE_ADJUSTED)}</>}
+              {showKey && !c.balance1Correct && <> · {t.expected}: {formatMoney(BASE_ADJUSTED)}</>}
             </div>
           </li>
           <li>
@@ -76,7 +80,7 @@ export function Evidence({ record, audience }: { record: ProofRecord; audience: 
               {twist?.message[lang]}
               <br />
               {t.yourAnswer}: {CATEGORY_LABEL[lang][sub.twistCategory]}
-              {!c.twistCategoryCorrect && twist && <> · {t.expected}: {CATEGORY_LABEL[lang][twist.category]}</>}
+              {showKey && !c.twistCategoryCorrect && twist && <> · {t.expected}: {CATEGORY_LABEL[lang][twist.category]}</>}
             </div>
           </li>
           <li>
@@ -84,7 +88,7 @@ export function Evidence({ record, audience }: { record: ProofRecord; audience: 
             <Pill ok={c.balance2Correct}>{c.balance2Correct ? t.correct : t.different}</Pill>
             <div className="sub">
               {t.yourAnswer}: {formatMoney(sub.balance2)}
-              {!c.balance2Correct && twist && <> · {t.expected}: {formatMoney(twist.adjusted)}</>}
+              {showKey && !c.balance2Correct && twist && <> · {t.expected}: {formatMoney(twist.adjusted)}</>}
             </div>
           </li>
           <li>

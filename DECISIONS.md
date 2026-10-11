@@ -15,3 +15,15 @@ A running log. Each session ends with: decisions updated, tomorrow's first move 
 - **Bilingual, Spanish by default.** The users are Mexican; the demo is recorded in English.
 
 **Tomorrow's first move:** run the mechanical test pass on the deployed URL, then the persona test.
+
+## Session 2 — Oct 10, 2026 (mechanical test pass)
+
+**Bug found:** the same start ticket could be submitted again and again (`/api/evaluate` returned 200 twice), and the candidate's result screen showed the expected answers. A candidate could read the key, resubmit on the same ticket and share a "perfect" proof with the original start time. The reviewer couldn't tell.
+
+**Fix:**
+- Tickets are single-use: the second submission returns 409 and the UI explains how to correct instead.
+- The answer key is shown to the reviewer only. The candidate still sees item by item what differed from expected (condition 3), and corrections go through the visible clarification note, next to the original answer.
+
+**Known limitation (honest):** without a database, single-use is enforced per server instance. On Vercel a determined candidate could still start a new attempt (with a new random twist and a new start time). That's acceptable for the pilot because a new attempt doesn't erase anything: it's a new, separately timed proof. A pilot with real employers would add a tiny attempt log (ticket ids only, no personal data).
+
+**Tomorrow's first move:** persona test with screenshots of every screen.

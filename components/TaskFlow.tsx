@@ -234,6 +234,7 @@ export default function TaskFlow() {
           part1Min,
         }),
       });
+      if (r.status === 409) return setError(t.ticketUsed);
       if (!r.ok) throw new Error();
       const j = await r.json();
       setRecord(j.record);

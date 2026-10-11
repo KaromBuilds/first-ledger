@@ -10,6 +10,16 @@ export const runtime = "nodejs";
 
 const MAX_TICKET_AGE_MS = 6 * 60 * 60 * 1000;
 
+// Single-use tickets, best effort without a database: each server instance remembers
+// the ticket ids it has already graded until they expire. (Limitation logged in DECISIONS.md.)
+const usedTickets = new Map<string, number>();
+function claimTicket(id: string, now: number): boolean {
+  for (const [k, exp] of usedTickets) if (exp < now) usedTickets.delete(k);
+  if (usedTickets.has(id)) return false;
+  usedTickets.set(id, now + MAX_TICKET_AGE_MS);
+  return true;
+}
+
 export async function POST(req: Request) {
   let body: unknown;
   try {
@@ -25,6 +35,7 @@ export async function POST(req: Request) {
     if (now - ticket.startedAt > MAX_TICKET_AGE_MS) return NextResponse.json({ error: "ticket_expired" }, { status: 400 });
 
     const input = parseEvaluate(body, ticket.twistId);
+    if (!claimTicket(ticket.id, now)) return NextResponse.json({ error: "ticket_used" }, { status: 409 });
 
     // The server re-grades from the raw answers. Client-side checks are never trusted.
     const checks = grade({
